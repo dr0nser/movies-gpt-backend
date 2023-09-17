@@ -1,54 +1,73 @@
 import axios from "axios";
-import { AXIOS_REQ_CONFIG } from "./constants";
-import { Logo, Video } from "./types";
+import {
+  Genre,
+  Logo,
+  Movie,
+  MovieDetails,
+  MovieResponse,
+  Video,
+} from "./types";
+import { CONFIG } from "./constants";
 
-export const getBannerVideo = async () => {
-  const nowPlayingList = await axios.get(
-    "https://api.themoviedb.org/3/movie/now_playing",
-    AXIOS_REQ_CONFIG
+const getMovieTrailerUrlById = async (
+  movieId: number
+): Promise<string | null> => {
+  const response = await axios.get(
+    `https://api.themoviedb.org/3/movie/${movieId}/videos`,
+    CONFIG
   );
-  const nowPlayingMovie = await nowPlayingList.data.results[
-    getRandomIndexBetween(0, 19)
-  ];
-  return nowPlayingMovie;
+  if (response.data.results.length === 0) return null;
+  const trailers: Video[] = await response.data.results.filter(
+    (video: Video) =>
+      video.site === "YouTube" &&
+      (video.type === "Trailer" || video.type === "Teaser")
+  );
+  if (!trailers) return null;
+  return `https://www.youtube.com/watch?v=${trailers[0].key}`;
 };
 
-export const getMovieDetailsById = async (id: number) => {
-  const details = await axios.get(
-    `
-    https://api.themoviedb.org/3/movie/${id}`,
-    AXIOS_REQ_CONFIG
+const getMovieLogoByIdAndLanguage = async (
+  movieId: number,
+  lang: string
+): Promise<string | null> => {
+  const response = await axios.get(
+    `https://api.themoviedb.org/3/movie/${movieId}/images`,
+    CONFIG
   );
-  return details.data;
+  if (response.data.logos.length === 0) return null;
+  const logo: Logo = await response.data.logos.filter(
+    (logo: Logo) => logo.iso_639_1 === lang
+  );
+  if (!logo) return null;
+  return `https://image.tmdb.org/t/p/w500${logo.file_path}`;
 };
 
-export const getMovieTrailerById = async (id: number) => {
-  const videos = await axios.get(
-    `https://api.themoviedb.org/3/movie/${id}/videos`,
-    AXIOS_REQ_CONFIG
-  );
-  const trailer = videos.data.results.filter(
-    (video: Video) => video.site === "YouTube" && video.type === "Trailer"
-  );
-  if (trailer.length > 0) return trailer[0];
-  return videos.data.results.filter(
-    (video: Video) => video.site === "YouTube" && video.type === "Teaser"
-  )[0];
+const formatGenres = (genres: Genre[]): string[] => {
+  const result: string[] = [];
+  genres.forEach((genre: Genre) => {
+    result.push(genre.name);
+  });
+  return result;
 };
 
-export const getMovieLogoById = async (id: number) => {
-  const images = await axios.get(
-    `https://api.themoviedb.org/3/movie/${id}/images`,
-    AXIOS_REQ_CONFIG
-  );
-  const image = images.data.logos.filter(
-    (logo: Logo) => logo.iso_639_1 === "en"
-  )[0];
-  return image;
-};
-
-const getRandomIndexBetween = (min: number, max: number): number => {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+const formatDuration = (minutes: number): string => {
+  const hours = Math.floor(minutes / 60);
+  const remainingMinutes = minutes % 60;
+  let result = "";
+  if (hours > 0) {
+    result += `${hours}hr`;
+    if (hours > 1) {
+      result += "s"; // for plural
+    }
+    result += " ";
+  }
+  if (remainingMinutes > 0) {
+    result += `${remainingMinutes}min`;
+    if (remainingMinutes > 1) {
+      result += "s"; // for plural
+    }
+  }
+  return result.trim();
 };
 
 export const formatDate = (inputDate: string): string => {
@@ -70,13 +89,11 @@ export const formatDate = (inputDate: string): string => {
     "December",
   ];
   const month = monthNames[date.getMonth()];
-
   const daySuffix = getDaySuffix(day);
-
   return `${day}${daySuffix} ${month}, ${year}`;
 };
 
-function getDaySuffix(day: number) {
+const getDaySuffix = (day: number): string => {
   if (day >= 11 && day <= 13) {
     return "th";
   }
@@ -90,28 +107,113 @@ function getDaySuffix(day: number) {
     default:
       return "th";
   }
-}
-
-export const formatMovieDuration = (minutes: number): string => {
-  const hours = Math.floor(minutes / 60);
-  const remainingMinutes = minutes % 60;
-
-  let result = "";
-
-  if (hours > 0) {
-    result += `${hours}hr`;
-    if (hours > 1) {
-      result += "s"; // Plural form
-    }
-    result += " ";
-  }
-
-  if (remainingMinutes > 0) {
-    result += `${remainingMinutes}min`;
-    if (remainingMinutes > 1) {
-      result += "s"; // Plural form
-    }
-  }
-
-  return result.trim();
 };
+
+const getMovieDetailsById = async (movieId: number): Promise<MovieResponse> => {
+  const response = await axios.get(
+    `https://api.themoviedb.org/3/movie/${movieId}`,
+    CONFIG
+  );
+  const details: MovieDetails = response.data;
+  const {
+    id,
+    genres,
+    overview,
+    poster_path,
+    backdrop_path,
+    runtime,
+    title,
+    release_date,
+    vote_average,
+    vote_count,
+    original_language, // needed to fetch the actual logo
+  } = details;
+  const trailerUrl: string | null = await getMovieTrailerUrlById(movieId);
+  const logoUrl: string | null = await getMovieLogoByIdAndLanguage(
+    movieId,
+    original_language
+  );
+
+  const result: MovieResponse = {
+    id,
+    title,
+    overview,
+    poster_path: `https://image.tmdb.org/t/p/w500${poster_path}`,
+    backdropUrl: `https://image.tmdb.org/t/p/w500${backdrop_path}`,
+    genres: formatGenres(genres),
+    duration: formatDuration(runtime),
+    release_date: formatDate(release_date),
+    rating: vote_average,
+    total_ratings: vote_count,
+    trailerUrl,
+    logoUrl,
+  };
+
+  return result;
+};
+
+const getNowPlaying = async (): Promise<MovieResponse[]> => {
+  try {
+    const response = await axios.get(
+      "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1&region=IN",
+      CONFIG
+    );
+    const movies: Movie[] = await response.data.results;
+    const upcomingMovies: MovieResponse[] = await Promise.all(
+      movies.map((movie: Movie) => getMovieDetailsById(movie.id))
+    );
+    return upcomingMovies;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const getPopular = async (): Promise<MovieResponse[]> => {
+  try {
+    const response = await axios.get(
+      "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1&region=IN",
+      CONFIG
+    );
+    const movies: Movie[] = await response.data.results;
+    const upcomingMovies: MovieResponse[] = await Promise.all(
+      movies.map((movie: Movie) => getMovieDetailsById(movie.id))
+    );
+    return upcomingMovies;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const getTopRated = async (): Promise<MovieResponse[]> => {
+  try {
+    const response = await axios.get(
+      "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1&region=IN",
+      CONFIG
+    );
+    const movies: Movie[] = await response.data.results;
+    const upcomingMovies: MovieResponse[] = await Promise.all(
+      movies.map((movie: Movie) => getMovieDetailsById(movie.id))
+    );
+    return upcomingMovies;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const getUpcoming = async (): Promise<MovieResponse[]> => {
+  try {
+    const response = await axios.get(
+      "https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1&region=IN",
+      CONFIG
+    );
+    const movies: Movie[] = await response.data.results;
+    const upcomingMovies: MovieResponse[] = await Promise.all(
+      movies.map((movie: Movie) => getMovieDetailsById(movie.id))
+    );
+    return upcomingMovies;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export { getNowPlaying, getPopular, getTopRated, getUpcoming };
