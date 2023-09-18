@@ -16,7 +16,7 @@ It takes a user id as query parameter and validates it. Upon success, it respond
 
 #### Response Payload Format
 
-```json
+```typescript
 {
     id: number;
     title: string;
@@ -45,7 +45,7 @@ It takes a user id as query parameter and validates it. Upon success, it respond
 
 #### Response Payload Format
 
-```json
+```typescript
 [
     name: string;
     data: [
@@ -81,7 +81,7 @@ It takes a user id and query as query parameters and validates the user id. Upon
 
 #### Response Payload Format
 
-```json
+```typescript
 [
     {
         id: number;
