@@ -1,4 +1,6 @@
 import dotenv from "dotenv";
+import OpenAI from "openai";
+
 dotenv.config();
 
 export const CONFIG = {
@@ -7,3 +9,7 @@ export const CONFIG = {
     Authorization: `Bearer ${process.env.TMDB_READ_ACCESS_TOKEN}`,
   },
 };
+
+export const openai = new OpenAI({
+  apiKey: process.env.OPEN_AI_API_KEY,
+});

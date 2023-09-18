@@ -3,6 +3,7 @@ import { getAuth } from "firebase-admin/auth";
 import dotenv from "dotenv";
 import { GalleryResponse, MovieResponse } from "../utils/types";
 import {
+  getMoviesFromQuery,
   getNowPlaying,
   getPopular,
   getTopRated,
@@ -52,6 +53,22 @@ router.get("/gallery", async (req: Request, res: Response) => {
       { name: "Upcoming", data: upcomingMovies },
     ];
     res.status(200).json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Unexpected error occurred" });
+  }
+});
+
+router.get("/chat", async (req: Request, res: Response) => {
+  const userId: string = req.query.userId?.toString();
+  if (!userId) return res.status(400).json({ error: "userId is required" });
+  try {
+    const user = await getAuth().getUser(userId);
+    if (!user) return res.status(400).json({ error: "User not found" });
+    const query = req.query.query?.toString();
+    if (!query) return res.status(400).json({ error: "Query not found" });
+    const movies = await getMoviesFromQuery(query);
+    res.status(200).json(movies);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Unexpected error occurred" });

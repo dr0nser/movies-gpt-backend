@@ -7,7 +7,7 @@ import {
   MovieResponse,
   Video,
 } from "./types";
-import { CONFIG } from "./constants";
+import { CONFIG, openai } from "./constants";
 
 const getMovieTrailerUrlById = async (
   movieId: number
@@ -26,20 +26,20 @@ const getMovieTrailerUrlById = async (
   return `https://www.youtube.com/watch?v=${trailers[0].key}`;
 };
 
-const getMovieLogoByIdAndLanguage = async (
-  movieId: number,
-  lang: string
-): Promise<string | null> => {
+const getMovieLogoById = async (movieId: number): Promise<string | null> => {
   const response = await axios.get(
     `https://api.themoviedb.org/3/movie/${movieId}/images`,
     CONFIG
   );
-  if (response.data.logos.length === 0) return null;
-  const logo: Logo = await response.data.logos.filter(
-    (logo: Logo) => logo.iso_639_1 === lang
+  const logos = await response.data.logos;
+  if (logos.length === 0) return null;
+  // try to find the english logo
+  const enLogo: Logo[] = await logos.filter(
+    (logo: Logo) => logo.iso_639_1 === "en"
   );
-  if (!logo) return null;
-  return `https://image.tmdb.org/t/p/w500${logo.file_path}`;
+  if (enLogo.length > 0)
+    return `https://image.tmdb.org/t/p/w500${enLogo[0].file_path}`;
+  return `https://image.tmdb.org/t/p/w500${logos[0].file_path}`;
 };
 
 const formatGenres = (genres: Genre[]): string[] => {
@@ -126,13 +126,9 @@ const getMovieDetailsById = async (movieId: number): Promise<MovieResponse> => {
     release_date,
     vote_average,
     vote_count,
-    original_language, // needed to fetch the actual logo
   } = details;
   const trailerUrl: string | null = await getMovieTrailerUrlById(movieId);
-  const logoUrl: string | null = await getMovieLogoByIdAndLanguage(
-    movieId,
-    original_language
-  );
+  const logoUrl: string | null = await getMovieLogoById(movieId);
 
   const result: MovieResponse = {
     id,
@@ -216,4 +212,41 @@ const getUpcoming = async (): Promise<MovieResponse[]> => {
   }
 };
 
-export { getNowPlaying, getPopular, getTopRated, getUpcoming };
+const searchMovieByName = async (name: string) => {
+  const response = await axios.get(
+    `https://api.themoviedb.org/3/search/movie?query=${name}&include_adult=false&language=en-US&page=1`,
+    CONFIG
+  );
+  const details = await response.data.results[0];
+  return details;
+};
+
+const getMoviesFromQuery = async (query: string): Promise<MovieResponse[]> => {
+  try {
+    const modifiedQuery = `Act as a movie recommendation system and suggest movies for the query: ${query}. Give 10 movie names at maximum. Provide the result as a comma separated string of movie names like in the example given ahead. Example: Gadar 2, Oppenheimer, Sholay, Barbie, Jawan, Amar Akbar Anthony, Fast X, The Equalizer 3, Poor Things, The Nun II `;
+    const completion = await openai.chat.completions.create({
+      messages: [{ role: "assistant", content: modifiedQuery }],
+      model: "gpt-3.5-turbo",
+    });
+    const movieNames: string[] =
+      completion.choices[0].message.content.split(", ");
+    const result: MovieResponse[] = await Promise.all(
+      movieNames.map(async (name: string) => {
+        const { id } = await searchMovieByName(name);
+        const movieDetails: MovieResponse = await getMovieDetailsById(id);
+        return movieDetails;
+      })
+    );
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export {
+  getNowPlaying,
+  getPopular,
+  getTopRated,
+  getUpcoming,
+  getMoviesFromQuery,
+};
