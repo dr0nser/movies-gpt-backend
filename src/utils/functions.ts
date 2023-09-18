@@ -22,8 +22,8 @@ const getMovieTrailerUrlById = async (
       video.site === "YouTube" &&
       (video.type === "Trailer" || video.type === "Teaser")
   );
-  if (!trailers) return null;
-  return `https://www.youtube.com/watch?v=${trailers[0].key}`;
+  if (!trailers || trailers.length == 0) return null;
+  return `https://www.youtube.com/embed/${trailers[0].key}?autoplay=1&mute=1&loop=1&playlist=${trailers[0].key}&controls=0&showinfo=0&vq=hd1080`;
 };
 
 const getMovieLogoById = async (movieId: number): Promise<string | null> => {
@@ -155,8 +155,12 @@ const getNowPlaying = async (): Promise<MovieResponse[]> => {
       CONFIG
     );
     const movies: Movie[] = await response.data.results;
+    const filteredMovies: Movie[] = await movies.filter(
+      (movie: Movie) =>
+        movie.poster_path !== null && movie.backdrop_path !== null
+    );
     const upcomingMovies: MovieResponse[] = await Promise.all(
-      movies.map((movie: Movie) => getMovieDetailsById(movie.id))
+      filteredMovies.map((movie: Movie) => getMovieDetailsById(movie.id))
     );
     return upcomingMovies;
   } catch (error) {
@@ -171,8 +175,12 @@ const getPopular = async (): Promise<MovieResponse[]> => {
       CONFIG
     );
     const movies: Movie[] = await response.data.results;
+    const filteredMovies: Movie[] = await movies.filter(
+      (movie: Movie) =>
+        movie.poster_path !== null && movie.backdrop_path !== null
+    );
     const upcomingMovies: MovieResponse[] = await Promise.all(
-      movies.map((movie: Movie) => getMovieDetailsById(movie.id))
+      filteredMovies.map((movie: Movie) => getMovieDetailsById(movie.id))
     );
     return upcomingMovies;
   } catch (error) {
@@ -187,8 +195,12 @@ const getTopRated = async (): Promise<MovieResponse[]> => {
       CONFIG
     );
     const movies: Movie[] = await response.data.results;
+    const filteredMovies: Movie[] = await movies.filter(
+      (movie: Movie) =>
+        movie.poster_path !== null && movie.backdrop_path !== null
+    );
     const upcomingMovies: MovieResponse[] = await Promise.all(
-      movies.map((movie: Movie) => getMovieDetailsById(movie.id))
+      filteredMovies.map((movie: Movie) => getMovieDetailsById(movie.id))
     );
     return upcomingMovies;
   } catch (error) {
@@ -203,8 +215,12 @@ const getUpcoming = async (): Promise<MovieResponse[]> => {
       CONFIG
     );
     const movies: Movie[] = await response.data.results;
+    const filteredMovies: Movie[] = await movies.filter(
+      (movie: Movie) =>
+        movie.poster_path !== null && movie.backdrop_path !== null
+    );
     const upcomingMovies: MovieResponse[] = await Promise.all(
-      movies.map((movie: Movie) => getMovieDetailsById(movie.id))
+      filteredMovies.map((movie: Movie) => getMovieDetailsById(movie.id))
     );
     return upcomingMovies;
   } catch (error) {

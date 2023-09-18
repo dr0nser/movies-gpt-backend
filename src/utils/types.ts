@@ -1,3 +1,8 @@
+export interface Query {
+  userId: string;
+  query?: string;
+}
+
 export interface Video {
   iso_639_1: string;
   iso_3166_1: string;
@@ -55,7 +60,7 @@ export interface Movie {
   original_title: string;
   overview: string;
   popularity: number;
-  poster_path: string;
+  poster_path: string | null;
   release_date: string;
   title: string;
   video: false;
