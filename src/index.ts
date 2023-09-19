@@ -5,7 +5,6 @@ import helmet from "helmet";
 import router from "./routes/routes";
 import * as admin from "firebase-admin";
 import { getAuth } from "firebase-admin/auth";
-import { Query } from "utils/types";
 
 dotenv.config();
 

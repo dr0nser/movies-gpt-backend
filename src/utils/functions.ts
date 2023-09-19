@@ -139,7 +139,7 @@ const getMovieDetailsById = async (movieId: number): Promise<MovieResponse> => {
     genres: formatGenres(genres),
     duration: formatDuration(runtime),
     release_date: formatDate(release_date),
-    rating: vote_average,
+    rating: Math.round(vote_average * 10) / 10,
     total_ratings: vote_count,
     trailerUrl,
     logoUrl,
