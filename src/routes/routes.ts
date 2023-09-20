@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import dotenv from "dotenv";
 import { GalleryResponse, MovieResponse } from "../utils/types";
 import {
+  getBannerVideo,
   getMoviesFromQuery,
   getNowPlaying,
   getPopular,
@@ -14,13 +15,9 @@ const router = express.Router();
 
 router.get("/banner", async (req: Request, res: Response) => {
   try {
-    const nowPlaying: MovieResponse[] = await getNowPlaying();
-    const result = nowPlaying.filter(
-      (movie: MovieResponse) => movie.trailerUrl !== null
-    );
-    if (result.length === 0)
-      return res.status(404).json({ error: "No movies found" });
-    res.status(200).json(result[0]);
+    const bannerVideo = await getBannerVideo();
+    if (!bannerVideo) return res.status(404).json({ error: "No movies found" });
+    res.status(200).json(bannerVideo);
   } catch (error) {
     res.status(500).json({ error: "Unexpected error occurred" });
   }
@@ -50,7 +47,7 @@ router.get("/chat", async (req: Request, res: Response) => {
   try {
     const query = req.query.query?.toString();
     if (!query) return res.status(400).json({ error: "Query not found" });
-    const movies = await getMoviesFromQuery(query);
+    const movies: MovieResponse[] = await getMoviesFromQuery(query);
     res.status(200).json(movies);
   } catch (error) {
     res.status(500).json({ error: "Unexpected error occurred" });

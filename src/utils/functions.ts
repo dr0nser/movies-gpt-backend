@@ -134,8 +134,14 @@ const getMovieDetailsById = async (movieId: number): Promise<MovieResponse> => {
     id,
     title,
     overview,
-    poster_path: `https://image.tmdb.org/t/p/w500${poster_path}`,
-    backdropUrl: `https://image.tmdb.org/t/p/w500${backdrop_path}`,
+    poster_path:
+      poster_path !== null
+        ? `https://image.tmdb.org/t/p/w500${poster_path}`
+        : null,
+    backdropUrl:
+      backdrop_path !== null
+        ? `https://image.tmdb.org/t/p/original${backdrop_path}`
+        : null,
     genres: formatGenres(genres),
     duration: formatDuration(runtime),
     release_date: formatDate(release_date),
@@ -163,6 +169,21 @@ const getNowPlaying = async (): Promise<MovieResponse[]> => {
       filteredMovies.map((movie: Movie) => getMovieDetailsById(movie.id))
     );
     return upcomingMovies;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const getBannerVideo = async (): Promise<MovieResponse> => {
+  try {
+    const nowPlayingMovies: MovieResponse[] = await getNowPlaying();
+    const filteredList: MovieResponse[] = await nowPlayingMovies.filter(
+      (movie: MovieResponse) =>
+        movie.trailerUrl !== null && movie.logoUrl !== null
+    );
+    const bannerVideo: MovieResponse =
+      filteredList[Math.floor(Math.random() * filteredList.length)];
+    return bannerVideo;
   } catch (error) {
     console.error(error);
   }
@@ -253,13 +274,17 @@ const getMoviesFromQuery = async (query: string): Promise<MovieResponse[]> => {
         return movieDetails;
       })
     );
-    return result;
+    return result.filter(
+      (movie: MovieResponse) =>
+        movie.poster_path !== null && movie.backdropUrl !== null
+    );
   } catch (error) {
     console.error(error);
   }
 };
 
 export {
+  getBannerVideo,
   getNowPlaying,
   getPopular,
   getTopRated,
