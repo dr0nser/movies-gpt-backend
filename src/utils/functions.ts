@@ -269,9 +269,13 @@ const getMoviesFromQuery = async (query: string): Promise<MovieResponse[]> => {
       completion.choices[0].message.content.split(", ");
     const result: MovieResponse[] = await Promise.all(
       movieNames.map(async (name: string) => {
-        const { id } = await searchMovieByName(name);
-        const movieDetails: MovieResponse = await getMovieDetailsById(id);
-        return movieDetails;
+        const movie = await searchMovieByName(name);
+        if (movie) {
+          const movieDetails: MovieResponse = await getMovieDetailsById(
+            movie.id
+          );
+          return movieDetails;
+        }
       })
     );
     return result.filter(
