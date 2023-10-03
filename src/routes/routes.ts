@@ -43,7 +43,7 @@ router.get("/gallery", async (req: Request, res: Response) => {
   }
 });
 
-router.get("/chat", async (req: Request, res: Response) => {
+router.get("/search", async (req: Request, res: Response) => {
   try {
     const query = req.query.query?.toString();
     if (!query) return res.status(400).json({ error: "Query not found" });

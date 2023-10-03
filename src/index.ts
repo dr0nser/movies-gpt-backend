@@ -17,7 +17,7 @@ admin.initializeApp({
 });
 
 const app = express();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 5000;
 
 const authVerification = async (
   req: Request,
