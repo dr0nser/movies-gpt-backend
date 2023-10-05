@@ -16,7 +16,7 @@ This REST API provides 3 endpoints:
 
 - **URL:** `<DOMAIN_NAME>/api/banner?userId=<LOGGED_IN_USER_ID>`
 - **Description:** This route uses `HTTP GET` method to fetch the movie details for the banner video.
-  ![MoviesGPT Banner Video](https://drive.google.com/file/d/1QqJ0w5fVGQD4Ff7asvEm2aZYgLRUZj1T/view?usp=drive_link)
+  ![video-banner](https://github.com/dr0nser/movies-gpt-backend/assets/80523007/0b8d5f0a-51aa-43c9-9fa1-beab396bfd80)
 - **Request example:**
   ```javascript
   const response = await axios.get(<DOMAIN_NAME>/api/banner?userId=<LOGGED_IN_USER_ID>);
@@ -44,7 +44,7 @@ This REST API provides 3 endpoints:
 
 - **URL:** `<DOMAIN_NAME>/api/gallery?userId=<LOGGED_IN_USER_ID>`
 - **Description:** This route uses `HTTP GET` method to fetch the movie details for different sections. Each section contains a list of movie cards.
-  ![Movies Gallery](https://drive.google.com/file/d/1d8He_uEZCEGigyEriFk7JFXicPbVkbTR/view?usp=sharing)
+  ![gallery](https://github.com/dr0nser/movies-gpt-backend/assets/80523007/4ede376c-59a3-43f0-af75-562ddaaf35ae)
 - **Request example:**
 
   ```javascript
@@ -144,7 +144,7 @@ This REST API provides 3 endpoints:
 
 - **URL:** `<DOMAIN_NAME>/api/search?userId=<LOGGED_IN_USER_ID>&query=<SEACH_QUERY>`
 - **Description:** This route takes an additional `query` parameter which is the search query. This query is passed to the **GPT** API to get AI suggested movies. Then, the movie details are fetched from the **TMDB** API and sent to the frontend.
-  ![MoviesGPT Search Results](https://drive.google.com/file/d/1BZkO-4NPCgI0mDmCnLRyFBwyo8Fvb4J8/view?usp=sharing)
+  ![search](https://github.com/dr0nser/movies-gpt-backend/assets/80523007/00bfac63-8a0d-4861-a055-7b8e14351818)
 - **Request example:**
   ```javascript
   const response = await axios.get(<DOMAIN_NAME>/api/search?userId=<LOGGED_IN_USER_ID>&query=<SEACH_QUERY>);
