@@ -16,7 +16,7 @@ This REST API provides 3 endpoints:
 
 - **URL:** `<DOMAIN_NAME>/api/banner?userId=<LOGGED_IN_USER_ID>`
 - **Description:** This route uses `HTTP GET` method to fetch the movie details for the banner video.
-  ![MoviesGPT Banner Video](https://lh3.googleusercontent.com/pw/ADCreHfOmSc_IiR82xeLRBGIHOb1frcirGMQGh0ZgVbJe3KaLtEnZkHosJSLgDpH3YtqMO-ckEQy5_bCZoppwZwieEQFc0RynA9wP3ktTost85-IC_Q1RE44NTvkl1VZbp2r_d3y8M_JR4S1bO-lfhUCriZGi25RQZGFytbKrVQ0er7doHoR8_VpD7PdxEF6v6gPX1YW_H621NPapfvFmhKD8itlNzRqvBhvNPtMgYEbnAIlz68sQUAD-fOi1h2ad-c8rSQkoeQsM5Tc-jL8okXHDoWzBB585S0UZ8akIaqrvKIQAm96A3t7r5kFRal2rZoqhIX-PQpcMjrsS-M89XGCcNYk6w_z353gcwPqG4tHiiw9nyBMDkle_GkWeRj5XqAqRuAvSVJqQ8EmbZ1SOyzlEjTKoWVlkSWRjPsyicP-mxaQ9toKhrnwaJZOzMF6GplRLKKGY3c5ShBuRoU9EVpJ55F8nV5SZI6PsisW9h-kXdnLk7LTJJGcdicwm_btjv8-b4V4juxeQh_beNXdVcaYKCc3Nw2iWXKG0YXKlAqc9FUhJ2Q0jlDLndsaLjoJ_MJZJ_8EOH2f4fuDDvaDCUxSJR_tFp4C62X02LHnS6AHdgpe1JcIAEQclNJpopeQwWdUetRy7hLC7lXXbXnO5WF6qOnLsDV5IL5RuqvDS9kUCJ8ZjUTCLdE9BOddJG2ecEbGHGcvxixmlggQNO5scJ7Ih4pt6A8bdyHtKt2PuouKFomta27PsGyWIXSP7ZyXPM5nQ7y-cTVofksZwevQ0opBst4bynlNTsuTmGQuvnP5EdNS9tLwB8ayHgjxchvS8Fykx0U4dcs32OUGOvvpm_bHmXWBGa3IOhAvEogbgtVcPd7b2Zrz3gCqrlwVcgDEsQ3W2AOcE6NUnqgBbDXYrT_CRYHNQsoc2riHHZsU4BdJ-PT6iM8NTAt1Vw=w714-h301-no?authuser=1)
+  ![MoviesGPT Banner Video](https://drive.google.com/file/d/1QqJ0w5fVGQD4Ff7asvEm2aZYgLRUZj1T/view?usp=drive_link)
 - **Request example:**
   ```javascript
   const response = await axios.get(<DOMAIN_NAME>/api/banner?userId=<LOGGED_IN_USER_ID>);
@@ -44,7 +44,7 @@ This REST API provides 3 endpoints:
 
 - **URL:** `<DOMAIN_NAME>/api/gallery?userId=<LOGGED_IN_USER_ID>`
 - **Description:** This route uses `HTTP GET` method to fetch the movie details for different sections. Each section contains a list of movie cards.
-  ![Movies Gallery](https://lh3.googleusercontent.com/pw/ADCreHe9cejAK3uKJjDIdjRx8CvpAHN3W3zGjtNK-2Ze7dS3U1r32WgJelnUPBWcHjYz5CtHtzcIlkdqkp1tIxBR8bOtwcsPvj0fYPRvFW2UiS90mGmr3PNrvultUsIIVnvasYnvkpvqEb41ZMsxcF3xgZfnCIaWlGIngMVTnq8DRTImMsoGd_R4WGZcbEV8k9b-UDx4zxJMjL3qzDop-RuIJLD0Ov-JuoO3DlukP5ofWZmPr_Dg4AFtr24ZMFkq9oM2A9nbgyCX0ZjnWogCMjsC8883ZA0rp_ohCVuKJmkJ0rDBBgWHOwPEE9ZDlMyzDVFQzJt5At9fs6je1NID5UfH_C2WWqPljPP6XkGKM0T5p3kxsqo3bbx_SClkVZuAHTazUZ9uhvziHxWoPCDyBZ7d2XUixTCcTFoPhmh_Aj3-Ct_XKx3xtdebvgNtohTPDz5iqFFSIg3BPSE-Unyu3_L7ahgeh6UNQJcUql7ZzoRqeM2sGfvGuQ73VKn10chmCxXo8ZOHAEHMPrJn9vM7EfhZFKOeiAH7R7oEK0caH4QR6kMRUb2bILgXhOSgOlheFgvmtADo9a2ghU05QikfQn1GTufGx7oNzlBIKQf_dRWcKXyntyamIV7ofk5g_ZS0l6A3lF5GyIWnql2ArBA-sOrsFJPD57mZGTQczTp80i43u8n6pRcJj3hYhEu6lRPGBwPeyDtMFsTqIockHJF39P0bN_s2ZeNXzMRNDqCQtDGniQ5SzM-XgTmtU1wazkGzDed_9m7QTq2zFu7rrtByfEc4QLlj8p5pt2yyfNxIqgI-0-uPlOD_VU5J1CJqPBLUUrNB_E387vYMJV0MI5v-D8AGyeKElS5Qp0SdP1BaAh6MRd9D34apXutM1djpoTtV8xu9TGonb69jiiXMeFUsnLMbeAK8P63XSsET8yqdWPu1mWR7lYpMDh5cWg=w1811-h756-s-no?authuser=1)
+  ![Movies Gallery](https://drive.google.com/file/d/1d8He_uEZCEGigyEriFk7JFXicPbVkbTR/view?usp=sharing)
 - **Request example:**
 
   ```javascript
@@ -144,7 +144,7 @@ This REST API provides 3 endpoints:
 
 - **URL:** `<DOMAIN_NAME>/api/search?userId=<LOGGED_IN_USER_ID>&query=<SEACH_QUERY>`
 - **Description:** This route takes an additional `query` parameter which is the search query. This query is passed to the **GPT** API to get AI suggested movies. Then, the movie details are fetched from the **TMDB** API and sent to the frontend.
-  ![MoviesGPT Search Results](https://lh3.googleusercontent.com/pw/ADCreHeefqOEsYt0lXeDzcMEcgxts633bV7zJt6zj8czSgXBSG2H7BaWhHkOaBapRtVBsmYIF2esJWUPJBarPzZgyyFiVztgW-VLY6E3aaSR2L6ifgTwX4FJeCorV3nH3IG3dWKHCLgdVthXRf8nfGHfMMLcgLG_lkP9rF6UrOluwKBWGQqLbcx-W1PfrEwPJIkfevCJHkUrtLJZaQGFwp67-I4-KeeetKrZaALtkKx-bpjl4nWUWxM8AmIIKJGAkOnQXPc2BBxMhNwR_qKQ4sOZSuMtbqb98Awv-CXm2AfkAjyX-XydCBYg8kJ5LL7uM58oB1D0ceSIDa_gpN-5fGvTj3biOhQ6Ff-xjrqaAqvard-KaxpOJ7tcvS1ffMjWJ6EkGX_YUJg3fKvwPKRt6Qi7yblDcK1rXav1oRG6A-hQzcySDnKGcTNXxK0QOGYjdsmp7Zz3UOVaKMyi_ZGysiJ00cRQHaxLyVe3ymbOQbDzsGMoQdx2oOwo10xov7xZY63u0jmJE-rh48QB1-TuRhPdYn_zsK6zEuImVsZhDtf3pqWM4p8IjHe5k-li0EAjTbIrvGLw0DOfG5ky70ALYpC75AmTucdQNDACPm4ndgcPl3UqXZwsMeCerDiutU83NEz15Q_QVfpa4-tUZjYwbGEF1jIL85lRoUvwwtwU_6nBbp87Rm_TVTvBzaBIjzwMm-L1wRTkQtrGud1EF2QKLshs4JrqzKsVS_QRtjHy0TYp89vxkvV8tVptPzf8OOL9Bm39VX5rQC5pfkKuudgli7Qteu4112o29YqWhdTRNcXKb7mvVoCcfvmfVXhz_9JcR7NUTS_a_ahy8N52sKw6kgQGEA8bsyegUgqSMokFM1M9oN1oN2UavVhZH81Ql2lXWUwF6gMW_CTXEVZH3R0N7jdapDwL3lzX9Ve61FgRIJJdkv_Cgy2pUai84Q=w1884-h792-s-no?authuser=1)
+  ![MoviesGPT Search Results](https://drive.google.com/file/d/1BZkO-4NPCgI0mDmCnLRyFBwyo8Fvb4J8/view?usp=sharing)
 - **Request example:**
   ```javascript
   const response = await axios.get(<DOMAIN_NAME>/api/search?userId=<LOGGED_IN_USER_ID>&query=<SEACH_QUERY>);
