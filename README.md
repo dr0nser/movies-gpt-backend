@@ -1,7 +1,5 @@
 # MoviesGPT API
 
-## Description
-
 This is the backend for the [MoviesGPT](https://github.com/dr0nser/movies-gpt) app. It does three main things:
 
 - Checks user login details on the server side.
